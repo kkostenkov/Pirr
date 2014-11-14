@@ -1,9 +1,27 @@
-import urllib
+import urllib.request
+from urllib.error import URLError, HTTPError
 
-def check_connection():
-	f = urllib.urlopen('http://192.168.1.115:8000')
-	
+def fetch(host="http://127.0.0.1:8888/", quest=""):
+    if quest is not "":
+        host = host + "quest/" + quest
+    try:
+        response = urllib.request.urlopen(host)
+    except HTTPError as e:
+        print('The server couldn\'t fulfill the request.')
+        print('Error code: ', e.code)
+        return 'The server couldn\'t fulfill the request.'
+    except  URLError  as e:
+        print('We failed to reach a server.')
+        print('Reason: ', e.reason)
+        return 'We failed to reach a server.'
+    else:
+        return response.read()
 
-def send_message(msg):
-    f = urllib.urlopen('http://192.168.1.115:8000')
-    answer = f.read()
+    
+    #return urllib.request.urlopen(host).read()
+
+
+
+
+
+
